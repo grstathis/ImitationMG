@@ -1,0 +1,218 @@
+package imitationmgjava;
+
+
+import java.io.*;
+import java.util.*;
+//import java.util.logging.Level;
+//import java.util.logging.Logger;
+
+/**
+ *
+ * @author stathis
+ */
+public class RunOnce {
+  
+    public void GoOnce (int seed, int NumberOfPopulations, int NumberOfAgents, int NumberOfAgentsInPlay, PrintWriter writersum) throws UnsupportedEncodingException {
+        
+        //PrintWriter writer = null;
+        try {
+            
+            
+            //NumberOfAgents = 99;
+            //NumberOfAgentsInPlay = 99;
+            int countdown = 0;
+            Initialization NewGame = new Initialization();
+            NewGame.setSeed(seed);
+            //GameList GameList = new GameList();
+            GamePlay SingleGamePlay = new GamePlay();
+            Learning Imitation = new Learning();
+            Imitation.setSeed(seed);
+            Map<Double, Integer> map = new HashMap<>();
+          //  writer = new PrintWriter("StrategiesValues_" + iter + ".txt", "UTF-8");
+            ArrayList<Population> Game1 = NewGame.InitializePopulations(1, NumberOfAgents);
+            ArrayList<ArrayList<Integer>> singleGamePlay = SingleGamePlay.CreateGamePlayList(seed, 0, NumberOfAgentsInPlay, 1, Game1);
+            ArrayList<Agent> GameListAgent = SingleGamePlay.getGamePlayList(singleGamePlay, Game1);
+            boolean CurrentMinority;
+            ArrayList<Integer> Strategy1 = new ArrayList();
+            ArrayList<Integer> Strategy2 = new ArrayList();
+            for(int tick = 0; tick <= 1000000; tick++){
+                 
+                 CurrentMinority = 
+                 SingleGamePlay.PlayGameAndPublishMinority
+                (GameListAgent.size(), SingleGamePlay.getActionGamePlayList(GameListAgent));
+                 
+                 //System.out.println("Minority " + CurrentMinority);
+                 
+                 SingleGamePlay.UpdateScores(CurrentMinority, GameListAgent);
+                 //List<Integer> AgentScores = extract(((ArrayList<SinglePopulation>)(List)Game1).get(0).AgentList, on(SinglePopulationAgent.class).getTempScore());
+                 //System.out.println(Arrays.toString(AgentScores.toArray()));
+                 
+                 if( tick %  3 == 0){
+                     
+                    ArrayList<Agent> ImitationList = SingleGamePlay.getGamePlayList
+                    (SingleGamePlay.CreateGamePlayList(seed, tick, 3, 1, Game1),Game1);
+                    Imitation.setImitatorReferres(ImitationList, Game1);
+                    //Imitation.setRefStragies((ArrayList<SinglePopulationAgent>)(List)ImitationList, (ArrayList<SinglePopulation>)(List)Game1);
+                    Imitation.PerformImitation(0.7, 3, ImitationList, Game1);
+                    Utils.ZeroTempScores(Game1);
+                    ((ArrayList<SinglePopulation>)(List)Game1).get(0).setStrategyList();
+                    
+                 }
+                 //List<Boolean> AgentAction = extract(((ArrayList<SinglePopulation>)(List)Game1).get(0).AgentList, on(SinglePopulationAgent.class).getAction());
+                 //System.out.println(Arrays.toString(AgentAction.toArray()));
+                 ((ArrayList<SinglePopulation>)(List)Game1).get(0).setActions();
+                 //System.out.println(Arrays.toString(AgentAction.toArray()));
+                 
+                 //List<Double> AgentStrategies = extract(((ArrayList<SinglePopulation>)(List)Game1).get(0).AgentList, on(SinglePopulationAgent.class).getStrategy());
+                 //System.out.println(Arrays.toString(AgentStrategies.toArray()));
+                 //System.out.println(Arrays.toString(((ArrayList<SinglePopulation>)(List)Game1).get(0).StrategyList.toArray()));
+                 //System.out.println(Arrays.toString(((ArrayList<SinglePopulation>)(List)Game1).get(0).Actions.toByteArray()));
+                 //System.out.println("Actions: "+((ArrayList<SinglePopulation>)(List)Game1).get(0).Actions);
+                 //System.out.print("Strategy ");
+                 //for(SinglePopulationAgent Agent: ((ArrayList<SinglePopulation>)(List)Game1).get(0).AgentList ){
+                 //    System.out.print(" " + Agent.getAction());
+                 //}
+                 //System.out.println();
+                 
+                 map.clear();
+     
+                 for (Double temp : ((ArrayList<SinglePopulation>)(List)Game1).get(0).StrategyList) {
+                    Integer count = map.get(temp);
+ 
+                    map.put(temp, (count == null) ? 1 : count + 1);
+                 }
+                 //System.out.println("Size " + map.size());
+                 /*for (Map.Entry<Double, Integer> entry : map.entrySet()) {
+                      //System.out.print(countdown + "  ");  
+                      System.out.print(entry.getKey() + "   "
+                            + entry.getValue());
+                      System.out.println();
+                  }*/
+                 
+                 //System.out.println();
+                 
+                 if(map.size() <= 2){
+                    
+                    /*for (Map.Entry<Double, Integer> entry : map.entrySet()) {
+                      System.out.print(countdown + "  ");  
+                      System.out.print(entry.getKey() + "   "
+                            + entry.getValue());
+                      System.out.println();
+                    }*/
+                    int v = 0;
+                    for (Map.Entry<Double, Integer> entry : map.entrySet()) {
+                   //   writer.print(countdown + "  ");  
+                   //   writer.print(entry.getKey() + "   "
+                   //         + entry.getValue());
+                   //   writer.println();
+                      if(v == 0){
+                         Strategy1.add(entry.getValue());
+                      }else{
+                         Strategy2.add(entry.getValue()); 
+                      }
+                      v++;
+                    }
+                     countdown++;
+                 }
+                 /*for (Map.Entry<Double, Integer> entry : map.entrySet()) {
+                    System.out.println("Key : " + entry.getKey() + " Value : "
+                            + entry.getValue());
+                 }*/
+                 int v = 0;
+                 if(countdown == 1000){
+                     for (Map.Entry<Double, Integer> entry : map.entrySet()) {
+                      writersum.print(seed + "  ");  
+                      writersum.print(entry.getKey() + "   "
+                            + entry.getValue());
+                      //writersum.println();
+                       double average = 0.0;
+                       double variance = 0;
+                      
+                       if(v == 0){
+                        
+                    for (int i = 0; i < Strategy1.size(); i++)  {
+                      average += Strategy1.get(i) ; 
+                    }
+                    average = average/Strategy1.size();
+                    //writer.println("Strategy1 Avg " + average);
+                    writersum.print("   " + average);
+                    
+                    for(double a :Strategy1){
+                        variance += (average-a)*(average-a);
+                    }
+                        variance = variance/Strategy1.size();
+                    //writer.println("Strategy1 Var " + variance);
+                    writersum.print("   " + variance);
+                      
+                       }else{
+                           
+                         average = 0;
+                    for (int i = 0; i < Strategy2.size(); i++)  {
+                      average += Strategy2.get(i) ; 
+                    }
+                    average = average/Strategy2.size();
+                    //writer.println("Strategy2 Avg " + average);
+                    writersum.print("   " + average);
+                    variance = 0;
+                    for(double a :Strategy2){
+                        variance += (average-a)*(average-a);
+                    }
+                        variance = variance/Strategy2.size();
+                    //writer.println("Strategy2 Var " + variance);
+                    writersum.println(" " + variance);  
+                      }
+                      v++;
+                      
+                      
+                    }
+                     
+                    /*double average = 0.0;
+                    for (int i = 0; i < Strategy1.size(); i++)  {
+                      average += Strategy1.get(i) ; 
+                    }
+                    average = average/Strategy1.size();
+                    //writer.println("Strategy1 Avg " + average);
+                    writersum.println("Strategy1 Avg " + average);
+                    double variance = 0;
+                    for(double a :Strategy1){
+                        variance += (average-a)*(average-a);
+                    }
+                        variance = variance/Strategy1.size();
+                    //writer.println("Strategy1 Var " + variance);
+                    writersum.println("Strategy1 Var " + variance);
+                    average = 0;
+                    for (int i = 0; i < Strategy2.size(); i++)  {
+                      average += Strategy2.get(i) ; 
+                    }
+                    average = average/Strategy2.size();
+                    //writer.println("Strategy2 Avg " + average);
+                    writersum.println("Strategy2 Avg " + average);
+                    variance = 0;
+                    for(double a :Strategy2){
+                        variance += (average-a)*(average-a);
+                    }
+                        variance = variance/Strategy1.size();
+                    //writer.println("Strategy2 Var " + variance);
+                    writersum.println("Strategy2 Var " + variance);*/ 
+                     
+                     
+                     break;
+                 }
+        
+             }
+            //System.out.println(Arrays.toString(Strategy1.toArray()));
+            
+            
+            
+        //} catch (FileNotFoundException ex) {
+        //    Logger.getLogger(Go.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            //writer.close();
+            
+        }
+        
+        
+    }
+    
+    
+}
