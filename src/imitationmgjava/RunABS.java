@@ -1,7 +1,7 @@
 package imitationmgjava;
 
 
-import java.io.*;
+//import java.io.*;
 import java.util.*;
 //import java.util.logging.Level;
 //import java.util.logging.Logger;
@@ -38,17 +38,17 @@ class RunABS {
            * @param ProbabilityChangeFactor 
            */
            
-         
-    
           
-          public void run (     int seed, 
-                                int NumberOfPopulations, 
-                                int NumberOfAgents, 
-                                int NumberOfAgentsInPlay,
-                                int NumberOfImitators,
-                                int ImitationRounds,
-                                int NumberOfRounds,
-                                double ProbabilityChangeFactor){
+          
+          
+          public void run (int seed, 
+          int NumberOfPopulations, 
+          int NumberOfAgents, 
+          int NumberOfAgentsInPlay,
+          int NumberOfImitators,
+          int ImitationRounds,
+          int NumberOfRounds,
+          double ProbabilityChangeFactor ){
          
             
             
@@ -66,7 +66,7 @@ class RunABS {
             
             
             for(int tick = 0; tick <= NumberOfRounds; tick++){
-                 
+                 //System.out.println("Iteration :" + tick);
                  CurrentMinority = 
                  GamePlay.PlayGameAndPublishMinority
                 (GameListAgent.size(), GamePlay.getActionGamePlayList(GameListAgent));                 
@@ -80,12 +80,12 @@ class RunABS {
                     Imitation.PerformImitation(ProbabilityChangeFactor, ImitationRounds, ImitationList, Game);
                     Utils.ZeroTempScores(Game);
                    
-                    if(GameClass.getName().equals("imitationmgjava.SinglePopulation")){
+                    if(GameClass.getName().equals("imitationmgjava.SinglePopulationAgent")){
                       ((ArrayList<SinglePopulation>)(List)Game).get(0).setStrategyList();
                     }
                     
                  }
-                  if(GameClass.getName().equals("imitationmgjava.SinglePopulation")){
+                  if(GameClass.getName().equals("imitationmgjava.SinglePopulationAgent")){
                     ((ArrayList<SinglePopulation>)(List)Game).get(0).setActions();
                   }
                  

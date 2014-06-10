@@ -101,8 +101,10 @@ import java.util.*;
   * @param GamePopulations 
   */
  public <PopulationClass extends Population, AgentClass extends Agent> void PerformImitation 
-         (double ProbabilityChangeFactor, int ImitationRounds, 
-          ArrayList<Agent> ImitatorsList, ArrayList<PopulationClass> GamePopulations) {
+         (double ProbabilityChangeFactor, 
+          int ImitationRounds, 
+          ArrayList<Agent> ImitatorsList, 
+          ArrayList<PopulationClass> GamePopulations) {
      
       //ArrayList<PopulationClass> TempPopulation;
       Class GameClass = GamePopulations.get(0).getClass();
@@ -128,7 +130,8 @@ import java.util.*;
    
                                               
                          SImitator.setStrategy
-                         (TempPopulation.get(SImitator.getPopulationID()).AgentList.get(SImitator.getRefAgentID()).getStrategy());
+                         (TempPopulation.get(SImitator.getPopulationID()).AgentList.
+                                         get(SImitator.getRefAgentID()).getStrategy());
                          //System.out.println(SImitator.getStrategy());
                      }
                      //SImitator.setStrategy(Strategy);
@@ -149,7 +152,8 @@ import java.util.*;
                              - SImitator.getTempScore())) / (double)ImitationRounds;
                      if(rand.nextDouble() <= ProbabilityChange ){
                          SImitator.setAction
-                         (TempPopulation.get(SImitator.getPopulationID()).AgentList.get(SImitator.getRefAgentID()).getAction());
+                         (TempPopulation.get(SImitator.getPopulationID()).AgentList.
+                                         get(SImitator.getRefAgentID()).getAction());
                      }
                      //SImitator.setStrategy(Strategy);
                  }

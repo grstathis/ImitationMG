@@ -1,7 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package imitationmgjava;
 
 //import java.io.FileNotFoundException;
@@ -11,13 +8,28 @@ package imitationmgjava;
 //import java.util.logging.Logger;
 
 /**
- *
+ * The command line main interface for the Java Program. 
+ * The program expects 9 input numbers, the value after the equal sign is the default value. 
+ * The variables are explained in the class RunABS <br>
+ *      int seed = 0; <br>
+ *      int NumberOfPopulations = 1; <br>
+ *      int NumberOfAgents = 99; <br>
+ *      int NumberOfAgentsInPlay = 99; <br>
+ *      int NumberOfImitators = 3; <br>
+ *      int ImitationRounds = 3; <br>
+ *      int NumberOfRounds = 10000; <br>
+ *      double ProbabilityChangeFactor = 0.7; <br>
+ *      int NumberOfRuns = 10 : The number of separate experiments  <br>
+ * 
+ * 
+ * 
  * @author stathis
  */
 public class RunSimulation {
  
    public static void main(String[] args) {
        
+       //init the variables with some default values.
        int seed = 0;
        int NumberOfPopulations = 1; 
        int NumberOfAgents = 99; 
@@ -158,17 +170,19 @@ public class RunSimulation {
        // PrintWriter writersum = null;
         //try {
             RunABS go = new RunABS();
+            //TODO: should go private
+           
           //  writersum = new PrintWriter("StrategiesSum.txt", "UTF-8");
             for(int iter = 0; iter < NumberOfRuns; iter++){ 
                    
-                     go.run(iter + seed,
-                            NumberOfPopulations,
-                            NumberOfAgents,
-                            NumberOfAgentsInPlay,
-                            NumberOfImitators,
-                            ImitationRounds,
-                            NumberOfRounds, 
-                            ProbabilityChangeFactor);
+                     go.run( seed, 
+           NumberOfPopulations, 
+           NumberOfAgents, 
+           NumberOfAgentsInPlay,
+           NumberOfImitators,
+           ImitationRounds,
+           NumberOfRounds,
+           ProbabilityChangeFactor );
                  
            }
         //} catch (FileNotFoundException ex) {

@@ -95,6 +95,11 @@ public class MGJFrame extends javax.swing.JFrame {
         });
 
         jButton2.setText("Exit");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         NumberOfRuns.setText("10");
 
@@ -194,8 +199,6 @@ public class MGJFrame extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jLabel1.getAccessibleContext().setAccessibleName("Seed");
-
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -206,20 +209,184 @@ public class MGJFrame extends javax.swing.JFrame {
     private void NumberOfAgentsInPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NumberOfAgentsInPlayActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_NumberOfAgentsInPlayActionPerformed
-
+   
+    
+ /**
+ * The GUI button to start the Java Program. 
+ * The program expects 9 input numbers, the value after the equal sign is the default value. 
+ * The variables are explained in the class RunABS <br>
+ *      int seed = 0; <br>
+ *      int NumberOfPopulations = 1; <br>
+ *      int NumberOfAgents = 99; <br>
+ *      int NumberOfAgentsInPlay = 99; <br>
+ *      int NumberOfImitators = 3; <br>
+ *      int ImitationRounds = 3; <br>
+ *      int NumberOfRounds = 10000; <br>
+ *      double ProbabilityChangeFactor = 0.7; <br>
+ *      int NumberOfRuns = 10 : The number of separate experiments  <br>
+ * 
+ * 
+ * 
+ * @author stathis
+ */   
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
-          
+      //int NumberOfPopulations = NumberOfPopulations.getText();    
         
-       /*int iseed = 0;
+       int iseed = 0;
        int iNumberOfPopulations = 1; 
-       int NumberOfAgents = 99; 
-       int NumberOfAgentsInPlay = 99;
-       int NumberOfImitators = 3;
-       int ImitationRounds = 3;
-       int NumberOfRounds = 10000;
-       double ProbabilityChangeFactor = 0.7;
-       int NumberOfRuns = 10;*/
+       int iNumberOfAgents = 99; 
+       int iNumberOfAgentsInPlay = 99;
+       int iNumberOfImitators = 3;
+       int iImitationRounds = 3;
+       int iNumberOfRounds = 10000;
+       double iProbabilityChangeFactor = 0.7;
+       int iNumberOfRuns = 10;
+       boolean Run = true;
+        
+       try {
+         iseed = Integer.parseInt(Seed.getText());
+       } 
+       catch (NumberFormatException e) {
+                System.err.println("Argument: " + Seed.getText() + " must be an integer.");
+                Run = false;
+       } 
+       
+       try {
+          iNumberOfPopulations = Integer.parseInt(NumberOfPopulations.getText());
+          if(iNumberOfPopulations != 0 && (iNumberOfPopulations % 2 != 0) ){
+               //NumberOfPopulations = args[1];
+          }else{
+                System.err.println("Argument: " + NumberOfPopulations.getText() + " must be an ODD integer greater of equal to one. ");
+                Run = false;
+          }
+       }catch (NumberFormatException e) {
+                System.err.println("Argument: " +  NumberOfPopulations.getText() + " must be an integer.");
+                Run = false;
+       }
+       
+       try {
+           iNumberOfAgents =  Integer.parseInt(NumberOfAgents.getText());
+          if(iNumberOfAgents != 0 && (iNumberOfAgents % 2 != 0) ){
+                  //NumberOfAgents = args[2];
+           }else{
+             System.err.println("Argument: " + NumberOfAgents.getText() + " must be an ODD integer greater of equal to one. ");
+             Run = false;
+                //System.exit(1);
+           }
+               
+        }catch (NumberFormatException e) {
+               System.err.println("Argument: " + NumberOfAgents.getText() + " must be an integer.");
+               Run = false;
+        }
+       
+        try {
+                iNumberOfAgentsInPlay =  Integer.parseInt(NumberOfAgentsInPlay.getText());
+               if(iNumberOfAgentsInPlay != 0 && (iNumberOfAgentsInPlay % 2 != 0) ){
+                  //NumberOfAgents = args[2];
+               }else{
+                System.err.println("Argument: " + NumberOfAgentsInPlay.getText() + " must be an ODD integer greater of equal to one. ");
+                Run = false;
+                //System.exit(1);
+               }
+               
+            }catch (NumberFormatException e) {
+               System.err.println("Argument: " + NumberOfAgentsInPlay.getText() + " must be an integer.");
+               Run = false;
+            } 
+             
+         try {
+                iNumberOfImitators =  Integer.parseInt(NumberOfImitators.getText());
+               if(iNumberOfImitators != 0 ){
+                  //NumberOfAgents = args[2];
+               }else{
+                System.err.println("Argument: " + NumberOfImitators.getText() + " must be an integer greater of equal to one. ");
+                Run = false;
+                //System.exit(1);
+               }
+               
+            }catch (NumberFormatException e) {
+               System.err.println("Argument: " +  NumberOfImitators.getText() + " must be an integer.");
+               Run = false;
+            } 
+            
+           try {
+               iImitationRounds =  Integer.parseInt(ImitationRounds.getText());
+               if(iImitationRounds != 0 ){
+                  //NumberOfAgents = args[2];
+               }else{
+                System.err.println("Argument: " + ImitationRounds.getText() + " must be an integer greater to zero and less than the total rounds of the Game. ");
+                //System.exit(1);
+                Run = false;
+               }
+               
+            }catch (NumberFormatException e) {
+               System.err.println("Argument: " + ImitationRounds.getText() + " must be an integer.");
+               Run = false;
+            } 
+            
+            try {
+                iNumberOfRounds =  Integer.parseInt(NumberOfRounds.getText());
+               if(iNumberOfRounds != 0 ){
+                  //NumberOfAgents = args[2];
+               }else{
+                System.err.println("Argument: " + NumberOfRounds.getText() + " must be an integer greater than zero");
+                //System.exit(1);
+                Run = false;
+               }
+               
+            }catch (NumberFormatException e) {
+               System.err.println("Argument" + NumberOfRounds.getText() + " must be an integer.");
+               Run = false;
+            } 
+            
+            try {
+                iProbabilityChangeFactor =  Double.parseDouble(ProbabilityChangeFactor.getText());
+               if(iProbabilityChangeFactor != 0 && iProbabilityChangeFactor <= 1 ){
+                  //NumberOfAgents = args[2];
+               }else{
+                System.err.println("Argument: " + ProbabilityChangeFactor.getText() + " must be an double greater than zero and less than one");
+                //System.exit(1);
+                Run = false;
+               }
+               
+            }catch (NumberFormatException e) {
+               System.err.println("Argument: " + ProbabilityChangeFactor.getText() + " must be an double.");
+               Run = false;
+            } 
+            
+            try {
+                iNumberOfRuns =  Integer.parseInt(NumberOfRuns.getText());
+               if(iNumberOfRuns != 0 ){
+                  //NumberOfAgents = args[2];
+               }else{
+                System.err.println("Argument: " + NumberOfRuns.getText()  + " must be an integer greater than zero");
+                //System.exit(1);
+                Run = false;
+               }
+               
+            }catch (NumberFormatException e) {
+               System.err.println("Argument: " + NumberOfRuns.getText() + " must be an integer.");
+               Run = false;
+            }
+        
+             RunABS go = new RunABS();
+             if(Run == true){
+                 
+                for(int iter = 0; iter < iNumberOfRuns; iter++){ 
+                        System.out.println("Starting Experiment: " + iter); 
+                        go.run(iter + iseed, 
+           iNumberOfPopulations, 
+           iNumberOfAgents, 
+           iNumberOfAgentsInPlay,
+           iNumberOfImitators,
+           iImitationRounds,
+           iNumberOfRounds,
+           iProbabilityChangeFactor);
+
+              }
+            }
+            System.out.println("Done!"); 
        
         
                   // PrintWriter writersum = null;
@@ -235,6 +402,13 @@ public class MGJFrame extends javax.swing.JFrame {
         
       
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        
+        System.exit(0);
+        
+        
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -265,6 +439,7 @@ public class MGJFrame extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new MGJFrame().setVisible(true);
             }
